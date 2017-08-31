@@ -3,7 +3,9 @@ var app = express();
 var request = require("request");
 
 var cookieObject = {
-	"Cookie" : "JSESSIONID=ABEFBB3046CC6738BC1FC15EE34126B9"
+	"Cookie" : "_ga=GA1.2.520023289.1502177223; _gid=GA1.2.1471442791.1502177223; __utma=158042915.520023289.1502177223.1502177227.1502177227.1; __utmc=158042915; __utmz=158042915.1502177227.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=AA4A9B535AF845F328874208BDA3CF5D",
+	"Host" : "hiskenya.org",
+	"If-None-Match" : "\"059f30aba0cb4fcec96f569a86d329a23\""
 }
 
 
@@ -14,6 +16,35 @@ app.use(function(req, res, next) {
   next();
 });
 
+
+app.get('/loadOrganisationUnit', function (req, res) {
+	var url = "https://hiskenya.org/kenya/api/me?fields=dataViewOrganisationUnits";
+	// hellensidha / H12345678 
+	// https://hiskenya.org/
+	console.log(url); 
+	request({
+		url : url,
+		method : "GET",
+		headers : cookieObject
+	},function(error,response){
+		
+		if(error){
+			
+			res.status(400);
+			res.send(error);
+		}else{
+			
+			res.status(200);
+			
+			res.set("Content-Type","application/xml;charset=UTF-8");
+
+			res.send(response.body);			
+		}
+		
+		res.end();	
+	});
+   	
+});
 
 /*
 	Load Population Data according to 
@@ -79,6 +110,8 @@ app.get('/loadChartForNational', function (req, res) {
 	});
    	
 });
+
+
 
 
 /*
