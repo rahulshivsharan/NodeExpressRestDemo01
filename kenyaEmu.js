@@ -2,21 +2,24 @@ var express = require("express");
 var app = express();
 var request = require("request");
 
-//var BACKEND_URL = "http://test.hiskenya.org"; // test
-var BACKEND_URL = "https://hiskenya.org"; // production
+var applicationName = "KenyaEMU";
+
+var BACKEND_URL = "https://test.hiskenya.org/kenya"; // test
+//var BACKEND_URL = "https://hiskenya.org"; // production
 
 var headerObject = {
-	"Cookie" : "_ga=GA1.2.1815890372.1503902426; __utma=158042915.1815890372.1503902426.1503902429.1503902429.1; __utmc=158042915; __utmz=158042915.1503902429.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=6B10FFE9F457F2275A604174A8D47742"
+	"Cookie" : "JSESSIONID=DDCFD8D6FF3D1237D52D212ACA1ED3A6; __utma=236702980.1271857500.1516604883.1516604883.1516604883.1; __utmc=236702980; __utmz=236702980.1516604883.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)"
 };
 
 // cors headers set
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");  
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   next();
 });
 
-var server = app.listen(8081, function () {
+var server = app.listen(8085, function () {
 
   var host = server.address().address
   var port = server.address().port
@@ -30,6 +33,9 @@ app.get('/api/me', function (req, res) {
 	console.log(BACKEND_URL + "/api/me?fields="+urlParam);
 	var url = BACKEND_URL + "/api/me?fields="+urlParam;
 	console.log(url);
+
+	console.log(applicationName);
+
 	request({
 		url : url,
 		method : "GET",
@@ -57,6 +63,8 @@ app.get('/api/organisationUnits/:userProfileId', function (req, res) {
 	console.log(urlParam);
 	var url = BACKEND_URL + "/api/organisationUnits/"+urlParam;
 	console.log(url);
+	console.log(applicationName);
+
 	request({
 		url : url,
 		method : "GET",
@@ -85,6 +93,8 @@ app.get('/api/organisationUnits/:userProfileId/children.json', function (req, re
 	console.log("Children ",urlParam);
 	var url = BACKEND_URL + "/api/organisationUnits/"+urlParam+"/children.json";
 	console.log(url);
+	console.log(applicationName);	
+
 	request({
 		url : url,
 		method : "GET",
@@ -113,7 +123,7 @@ app.get('/api/25/analytics.json', function (req, res) {
 	var dimensions = req.query.dimension;
 	var displayProperty = req.query.displayProperty;
 	var skipMeta = req.query.skipMeta;	
-	
+	console.log(applicationName);
 	if(dimensions.constructor.name === "Array"){
 		for(var index = 0; index < dimensions.length; index++){
 			if(index === 0){

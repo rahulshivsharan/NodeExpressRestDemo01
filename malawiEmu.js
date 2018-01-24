@@ -1,13 +1,13 @@
 var express = require("express");
 var app = express();
 var request = require("request");
-
+var applicationName = "MalawiEMU";
 var cookieObject = {
-	"Cookie" : "_ga=GA1.2.520023289.1502177223; _gid=GA1.2.1471442791.1502177223; __utma=158042915.520023289.1502177223.1502177227.1502177227.1; __utmc=158042915; __utmz=158042915.1502177227.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=AA4A9B535AF845F328874208BDA3CF5D",
-	"Host" : "hiskenya.org",
-	"If-None-Match" : "\"059f30aba0cb4fcec96f569a86d329a23\""
-}
+	"Cookie" : "JSESSIONID=298E1D94443D288018CBDFD4B3DCD9EE"	
+};
 
+var BACKEND_ENDPOINT = "http://41.87.6.124/dhis"; //http://dhis2.health.gov.mw
+//Credentials : Nath / Change2017
 
 // cors headers set
 app.use(function(req, res, next) {
@@ -18,10 +18,12 @@ app.use(function(req, res, next) {
 
 
 app.get('/loadOrganisationUnit', function (req, res) {
-	var url = "https://hiskenya.org/kenya/api/me?fields=dataViewOrganisationUnits";
-	// hellensidha / H12345678 
-	// https://hiskenya.org/
-	console.log(url); 
+	var url = BACKEND_ENDPOINT +"/api/me?fields=dataViewOrganisationUnits";
+
+	console.log(url);
+
+	console.log(applicationName);
+
 	request({
 		url : url,
 		method : "GET",
@@ -55,10 +57,10 @@ app.get('/loadPopulation', function (req, res) {
 		ouParam = req.query.ou;
 
 
-	var url = "http://41.87.6.124/dhis/api/25/analytics.json?dimension=dx:IgrJPkQheG3&dimension=pe:"+selectedYears+"&filter=ou:"+ouParam+"&displayProperty=NAME&skipData=false";
+	var url = BACKEND_ENDPOINT + "/api/25/analytics.json?dimension=dx:IgrJPkQheG3&dimension=pe:"+selectedYears+"&filter=ou:"+ouParam+"&displayProperty=NAME&skipData=false";
 
 	//console.log(url);
-
+	console.log(applicationName);
 	request({
 		url : url,
 		method : "GET",
@@ -88,8 +90,10 @@ app.get('/loadPopulation', function (req, res) {
 */
 app.get('/loadChartForNational', function (req, res) {
 	var selectedYears = req.query.yearNos,
-		url = "http://41.87.6.124/dhis/api/25/analytics.json?dimension=dx:T9dsTHOL2cO;PlBcttPGqvj;IFPYARV8ZkT;F6iOqCMiaqF;KEVDD65MCAl;R6lkzZOb5OL;SrWfqhptcqK;Ylale2Jx2kI;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq&dimension=pe:"+selectedYears+"&filter=ou:lZsCb6y0KDX&displayProperty=NAME&skipMeta=false";
-	 
+		url = BACKEND_ENDPOINT + "/api/25/analytics.json?dimension=dx:T9dsTHOL2cO;PlBcttPGqvj;IFPYARV8ZkT;F6iOqCMiaqF;KEVDD65MCAl;R6lkzZOb5OL;SrWfqhptcqK;Ylale2Jx2kI;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq&dimension=pe:"+selectedYears+"&filter=ou:lZsCb6y0KDX&displayProperty=NAME&skipMeta=false";
+	
+	console.log(applicationName);
+
 	request({
 		url : url,
 		method : "GET",
@@ -121,9 +125,10 @@ app.get('/loadChartForNational', function (req, res) {
 app.get('/loadChartForZone', function (req, res) {
 	var selectedZoneIds = req.query.zoneIds,
 		selectedYears = req.query.yearNos,
-		url = "http://41.87.6.124/dhis/api/25/analytics.json?dimension=dx:R6lkzZOb5OL;KEVDD65MCAl;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq;T9dsTHOL2cO;Ylale2Jx2kI;SrWfqhptcqK;F6iOqCMiaqF;IFPYARV8ZkT;PlBcttPGqvj&dimension=pe:"+selectedYears+"&filter=ou:"+selectedZoneIds+"&displayProperty=NAME&skipData=false";
+		url = BACKEND_ENDPOINT + "/api/25/analytics.json?dimension=dx:R6lkzZOb5OL;KEVDD65MCAl;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq;T9dsTHOL2cO;Ylale2Jx2kI;SrWfqhptcqK;F6iOqCMiaqF;IFPYARV8ZkT;PlBcttPGqvj&dimension=pe:"+selectedYears+"&filter=ou:"+selectedZoneIds+"&displayProperty=NAME&skipData=false";
 	
 	console.log(url); 
+	console.log(applicationName);
 	request({
 		url : url,
 		method : "GET",
@@ -152,7 +157,9 @@ app.get('/loadChartForZone', function (req, res) {
 app.get('/loadChartForDistricts', function (req, res) {
 	var selectedDistrictIds = req.query.districtIds,
 		selectedYears = req.query.yearNos,
-		url = "http://41.87.6.124/dhis/api/25/analytics.json?dimension=dx:R6lkzZOb5OL;KEVDD65MCAl;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq;T9dsTHOL2cO;Ylale2Jx2kI;SrWfqhptcqK;F6iOqCMiaqF;IFPYARV8ZkT;PlBcttPGqvj&dimension=pe:"+selectedYears+"&filter=ou:"+selectedDistrictIds+"&displayProperty=NAME&skipData=false";
+		url = BACKEND_ENDPOINT + "/api/25/analytics.json?dimension=dx:R6lkzZOb5OL;KEVDD65MCAl;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq;T9dsTHOL2cO;Ylale2Jx2kI;SrWfqhptcqK;F6iOqCMiaqF;IFPYARV8ZkT;PlBcttPGqvj&dimension=pe:"+selectedYears+"&filter=ou:"+selectedDistrictIds+"&displayProperty=NAME&skipData=false";
+	 
+	console.log(applicationName);
 	 
 	request({
 		url : url,
@@ -182,8 +189,10 @@ app.get('/loadChartForDistricts', function (req, res) {
 app.get('/loadChartForHealthCenters', function (req, res) {
 	var selectedHealthCenterIds = req.query.hcIds,
 		selectedYears = req.query.yearNos,
-		url = "http://41.87.6.124/dhis/api/25/analytics.json?dimension=dx:R6lkzZOb5OL;KEVDD65MCAl;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq;T9dsTHOL2cO;Ylale2Jx2kI;SrWfqhptcqK;F6iOqCMiaqF;IFPYARV8ZkT;PlBcttPGqvj&dimension=pe:"+selectedYears+"&filter=ou:"+selectedHealthCenterIds+"&displayProperty=NAME&skipData=false";
-	 
+		url = BACKEND_ENDPOINT + "/api/25/analytics.json?dimension=dx:R6lkzZOb5OL;KEVDD65MCAl;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq;T9dsTHOL2cO;Ylale2Jx2kI;SrWfqhptcqK;F6iOqCMiaqF;IFPYARV8ZkT;PlBcttPGqvj&dimension=pe:"+selectedYears+"&filter=ou:"+selectedHealthCenterIds+"&displayProperty=NAME&skipData=false";
+	
+	console.log(applicationName);
+
 	request({
 		url : url,
 		method : "GET",
@@ -210,7 +219,10 @@ app.get('/loadChartForHealthCenters', function (req, res) {
 */
 app.get('/loadNational', function (req, res) {
 	var selectedYears = req.query.yearNos,
-		url = "http://41.87.6.124/dhis/api/25/analytics.json?dimension=dx:T9dsTHOL2cO;PlBcttPGqvj;IFPYARV8ZkT;F6iOqCMiaqF;KEVDD65MCAl;R6lkzZOb5OL;SrWfqhptcqK;Ylale2Jx2kI;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq&dimension=pe:"+selectedYears+"&filter=ou:lZsCb6y0KDX&displayProperty=NAME&skipMeta=false";
+		url = BACKEND_ENDPOINT + "/api/25/analytics.json?dimension=dx:T9dsTHOL2cO;PlBcttPGqvj;IFPYARV8ZkT;F6iOqCMiaqF;KEVDD65MCAl;R6lkzZOb5OL;SrWfqhptcqK;Ylale2Jx2kI;ZUZ4VsCyMyh;cQ6ErPzMMJo;f3GhhXjMcjq&dimension=pe:"+selectedYears+"&filter=ou:lZsCb6y0KDX&displayProperty=NAME&skipMeta=false";
+
+	console.log(applicationName);
+
 	request({
 		url : url,
 		method : "GET",
@@ -236,7 +248,10 @@ app.get('/loadNational', function (req, res) {
 	Load Zones
 */
 app.get('/loadZones', function (req, res) {
-	var url = "http://41.87.6.124/dhis/api/25/organisationUnits.json?userDataViewFallback=true&fields=id,displayName|rename(name),children[id,displayName|rename(name)]&paging=false";
+	var url = BACKEND_ENDPOINT + "/api/25/organisationUnits.json?userDataViewFallback=true&fields=id,displayName|rename(name),children[id,displayName|rename(name)]&paging=false";
+	
+	console.log(applicationName);
+
 	request({
 		url : url,
 		method : "GET",
@@ -261,7 +276,10 @@ app.get('/loadZones', function (req, res) {
 // load health Centers
 app.get("/loadHealthCenters",function(req,res){
 	var selectedDistrictId = req.query.districtId;
-	var url = "http://41.87.6.124/dhis/api/25/organisationUnits/"+selectedDistrictId+".json?node="+selectedDistrictId+"&fields=children[id,displayName|rename(name),children::isNotEmpty|rename(hasChildren)&paging=false";
+	var url = BACKEND_ENDPOINT + "/api/25/organisationUnits/"+selectedDistrictId+".json?node="+selectedDistrictId+"&fields=children[id,displayName|rename(name),children::isNotEmpty|rename(hasChildren)&paging=false";
+	
+	console.log(applicationName);
+
 	request({
 		url : url,
 		method : "GET",
@@ -287,7 +305,9 @@ app.get("/loadHealthCenters",function(req,res){
 // load district
 app.get("/loadDistricts",function(req,res){
 	var selectedZone = req.query.zoneId;
-	var url = "http://41.87.6.124/dhis/api/25/organisationUnits/"+selectedZone+".json?node=iQx6Edf0Xib&fields=children[id,displayName|rename(name),children::isNotEmpty|rename(hasChildren)&paging=false";
+	var url = BACKEND_ENDPOINT + "/api/25/organisationUnits/"+selectedZone+".json?node=iQx6Edf0Xib&fields=children[id,displayName|rename(name),children::isNotEmpty|rename(hasChildren)&paging=false";
+
+	console.log(applicationName);
 
 	request({
 		url : url,
